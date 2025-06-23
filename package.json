@@ -2,22 +2,30 @@
   "name": "googledrive-clone",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "create:db": "node ./src/scripts/createDb.js"
   },
   "dependencies": {
+    "@next-auth/typeorm-adapter": "^0.0.1",
+    "bcrypt": "^5.1.1",
+    "next": "15.3.1",
+    "next-auth": "^4.24.11",
+    "pg": "^8.15.6",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "next": "15.3.4"
+    "react-hot-toast": "^2.5.2",
+    "typeorm": "^0.3.22"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4",
     "eslint": "^9",
     "eslint-config-next": "15.3.4",
-    "@eslint/eslintrc": "^3"
+    "tailwindcss": "^4"
   }
 }
