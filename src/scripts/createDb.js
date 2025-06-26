@@ -7,11 +7,8 @@ import { getDataSource } from '../lib/typeorm.js';
 (async () => {
   try {
     const dbUrl = new URL(process.env.DATABASE_URL);
-    console.log("dbUrl: ", dbUrl);
     const dbName = dbUrl.pathname.slice(1);
-    console.log("dbName: ", dbName);
     const adminUrl = new URL(process.env.DATABASE_URL);
-    console.log("adminUrl: ", adminUrl);
 
     adminUrl.pathname = '/postgres'; // connect to default DB
 

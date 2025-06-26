@@ -15,9 +15,6 @@ const File = new EntitySchema({
     url: {
       type: "text",
     },
-    fileKey: {
-      type: "varchar",
-    },
     resourceType: {
       type: "varchar",
     },
