@@ -2,26 +2,41 @@ import { NextResponse } from "next/server";
 import { getDataSource } from "@/lib/typeorm";
 import bcrypt from "bcrypt";
 
-export async function POST(req) {
-  const { name, email, password } = await req.json();
+export async function POST(request) {
+  try {
+    const { name, email, password } = await request.json();
 
-  const db = await getDataSource();
-  const userRepo = db.getRepository("User");
+    const dataSource = await getDataSource();
+    const userRepository = dataSource.getRepository("User");
 
-  const existingUser = await userRepo.findOneBy({ email });
-  if (existingUser) {
+    const userExists = await userRepository.findOneBy({ email });
+
+    if (userExists) {
+      return NextResponse.json(
+        { error: "User with this email already exists." },
+        { status: 400 }
+      );
+    }
+
+    const saltRounds = 10;
+    const encryptedPassword = await bcrypt.hash(password, saltRounds);
+
+    const newUser = userRepository.create({
+      name,
+      email,
+      password: encryptedPassword,
+    });
+
+    await userRepository.save(newUser);
+
     return NextResponse.json(
-      { error: "Email already registered" },
-      { status: 400 }
+      { message: "Registration successful." },
+      { status: 201 }
+    );
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Something went wrong during registration." },
+      { status: 500 }
     );
   }
-
-  const hashedPassword = await bcrypt.hash(password, 10);
-  const user = userRepo.create({ name, email, password: hashedPassword });
-  await userRepo.save(user);
-
-  return NextResponse.json(
-    { message: "User registered successfully" },
-    { status: 201 }
-  );
 }

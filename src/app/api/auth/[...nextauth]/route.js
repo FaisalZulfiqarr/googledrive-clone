@@ -1,37 +1,42 @@
 import NextAuth from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
-import { getDataSource } from "@/lib/typeorm";
+import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
+import { getDataSource } from "@/lib/typeorm";
 import User from "@/entities/User";
 
+const credentialsAuth = Credentials({
+  name: "EmailLogin",
+  credentials: {
+    email: { label: "Email", type: "text" },
+    password: { label: "Password", type: "password" },
+  },
+  async authorize({ email, password }) {
+    const db = await getDataSource();
+    const userRepo = db.getRepository(User);
+
+    const foundUser = await userRepo.findOne({
+      where: { email },
+    });
+
+    if (!foundUser) return null;
+
+    const isPasswordMatch = await bcrypt.compare(password, foundUser.password);
+    if (!isPasswordMatch) return null;
+
+    return {
+      id: foundUser.id,
+      name: foundUser.name,
+      email: foundUser.email,
+    };
+  },
+});
+
 export const authOptions = {
+  secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: "jwt",
   },
-  providers: [
-    CredentialsProvider({
-      name: "Credentials",
-      credentials: {
-        email: {},
-        password: {},
-      },
-      async authorize(credentials) {
-        const db = await getDataSource();
-        const repo = db.getRepository(User);
-
-        const user = await repo.findOne({
-          where: { email: credentials.email },
-        });
-
-        if (!user) return null;
-
-        const valid = await bcrypt.compare(credentials.password, user.password);
-        if (!valid) return null;
-
-        return { id: user.id, name: user.name, email: user.email };
-      },
-    }),
-  ],
+  providers: [credentialsAuth],
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
@@ -42,14 +47,15 @@ export const authOptions = {
       return token;
     },
     async session({ session, token }) {
-      session.user.id = token.id;
-      session.user.name = token.name;
-      session.user.email = token.email;
+      if (session.user) {
+        session.user.id = token.id;
+        session.user.name = token.name;
+        session.user.email = token.email;
+      }
       return session;
     },
   },
-  secret: process.env.NEXTAUTH_SECRET,
 };
 
-const handler = NextAuth(authOptions);
-export { handler as GET, handler as POST };
+const authHandler = NextAuth(authOptions);
+export { authHandler as GET, authHandler as POST };
