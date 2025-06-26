@@ -1,37 +1,38 @@
-"use client";
-
-export default function PreviewModal({ file, onClose }) {
-  const extension = file.name.split(".").pop().toLowerCase();
-
-  const isImage = ["jpg", "jpeg", "png", "gif", "webp", "bmp", "svg"].includes(
-    extension
-  );
-
+export default function PreviewModal({ file, setShowPreview,isPreviewable }) {
   return (
-    <div className="fixed inset-0 bg-white flex items-center justify-center">
-      <div className="bg-gray-800 max-w-3xl w-full p-4 rounded shadow-lg relative">
-        <button
-          className="absolute top-2 right-2 text-lg font-bold text-red-500 hover:text-red-700"
-          onClick={onClose}
-        >
-          ✖
-        </button>
-
-        <h2 className="text-lg font-semibold mb-4 text-center">{file.name}</h2>
-
-        {isImage && (
-          <img
-            src={file.url.replace(/^http:\/\//, "https://")}
-            alt={file.name}
-            className="max-h-[70vh] w-full object-contain rounded"
-          />
-        )}
-
-        {!isImage && (
-          <p className="text-center text-gray-600 dark:text-gray-300">
-            This file format cannot be previewed.
-          </p>
-        )}
+    <div
+      className="fixed inset-0 flex items-center justify-center z-50"
+      onClick={() => setShowPreview(false)}
+    >
+      <div
+        className="bg-gray-800 p-6 rounded shadow-lg max-w-3xl w-full h-[80%]"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-semibold text-white">
+            Preview: {file.name}
+          </h2>
+          <button
+            className="text-red-500 hover:text-red-700"
+            onClick={() => setShowPreview(false)}
+          >
+            ✖
+          </button>
+        </div>
+        <div className="w-full h-full">
+          {isPreviewable ? (
+            <iframe
+              src={file.url}
+              title="File Preview"
+              className="w-full h-[90%] rounded border"
+              allowFullScreen
+            />
+          ) : (
+            <div className="text-center text-gray-500 pt-10">
+              This file type cannot be previewed.
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
