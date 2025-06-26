@@ -6,7 +6,7 @@ import { toast } from "react-hot-toast";
 import { useSession } from "next-auth/react";
 
 export default function Signup() {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const router = useRouter();
 
   const [name, setName] = useState("");
@@ -39,7 +39,7 @@ export default function Signup() {
   return (
     <div
       className="w-full h-screen flex items-center bg-cover bg-center bg-no-repeat"
-      style={{ backgroundImage: "url('/gd.jpg')" }}
+      style={{ backgroundImage: "url('/background.jpg')" }}
     >
       <form
         onSubmit={handleSubmit}
@@ -49,25 +49,27 @@ export default function Signup() {
         <div className="font-semibold space-y-6">
           <input
             id="name"
+            type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Name"
-            className="w-full border p-2 shadow-2xl rounded-xl placeholder-gray-300 font-light"
+            className="w-full border border-gray-300 p-2 shadow-2xl rounded-xl placeholder-gray-400 font-light focus:outline-none focus:ring-0 focus:border-blue-400"
           />
           <input
             id="email"
+            type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email"
-            className="w-full border p-2 shadow-2xl rounded-xl placeholder-gray-300 font-light"
+            className="w-full border border-gray-300 p-2 shadow-2xl rounded-xl placeholder-gray-400 font-light focus:outline-none focus:ring-0 focus:border-blue-400"
           />
           <input
             id="password"
+            type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Password"
-            type="password"
-            className="w-full border p-2 shadow-2xl rounded-xl placeholder-gray-300 font-light"
+            className="w-full border border-gray-300 p-2 shadow-2xl rounded-xl placeholder-gray-400 font-light focus:outline-none focus:ring-0 focus:border-blue-400"
           />
         </div>
         <button className="w-full  text-white bg-blue-600 px-6 py-2 rounded text-lg font-semibold hover:bg-blue-300 hover:cursor-pointer">

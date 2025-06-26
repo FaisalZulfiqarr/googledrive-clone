@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Gdrive App",
-  description: "Build a simplified Google Drive Clone",
+  title: "DriveVault - Your Personal Cloud Storage",
+  description: "A clean and simplified Google Drive clone to securely store, preview, and manage your files and folders.",
 };
 
 export default function RootLayout({ children }) {

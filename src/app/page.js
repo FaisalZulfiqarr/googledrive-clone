@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <section
       className="flex flex-col items-center justify-center min-h-screen p-6 bg-gray-50 text-center bg-center bg-no-repeat"
-      style={{ backgroundImage: "url('/gd.jpg')" }}
+      style={{ backgroundImage: "url('/background.jpg')" }}
     >
       <div className="flex justify-center items-center flex-col bg-white h-80 p-5">
         <h1 className="text-4xl font-bold mb-4 text-gray-600">
