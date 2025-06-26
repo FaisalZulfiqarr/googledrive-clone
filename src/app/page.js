@@ -11,7 +11,7 @@ export default function Home() {
     >
       <div className="flex justify-center items-center flex-col bg-white h-80 p-5">
         <h1 className="text-4xl font-bold mb-4 text-gray-600">
-          Welcome to YourDrive
+          Welcome to DriveVault
         </h1>
         <p className="text-lg text-gray-600 mb-6">
           Secure file storage. Access anywhere.

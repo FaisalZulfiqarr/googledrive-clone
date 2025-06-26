@@ -4,6 +4,8 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
+import FolderSection from "@/components/FolderSection";
+
 import Header from "@/components/Header";
 
 export default function Dashboard() {
@@ -25,6 +27,7 @@ export default function Dashboard() {
   return (
     <div>
       <Header userName={session.user.name} />
+      <FolderSection userId={session.user.id} />
     </div>
   );
 }
